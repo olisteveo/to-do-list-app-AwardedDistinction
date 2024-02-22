@@ -1,0 +1,14 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Customize your theme here -->
+        <item name="colorPrimary">#1976D2</item> <!-- Primary color -->
+        <item name="colorPrimaryDark">#1565C0</item> <!-- Darker variant of primary color -->
+        <item name="colorAccent">#FF4081</item> <!-- Accent color -->
+        <item name="android:textColorPrimary">#FFFFFF</item> <!-- Text color for primary content -->
+        <item name="android:textColorSecondary">#FFFFFF</item> <!-- Text color for secondary content -->
+        <item name="android:background">#FF9CB7E0</item> <!-- Background color -->
+        <!-- Add more customizations as needed -->
+    </style>
+
+</resources>

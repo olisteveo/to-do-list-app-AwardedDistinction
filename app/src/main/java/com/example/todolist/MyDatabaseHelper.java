@@ -1,8 +1,11 @@
 package com.example.todolist;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import java.util.ArrayList;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     // Database and table details
@@ -39,4 +42,38 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         // Create tables again
         onCreate(db);
     }
+
+    // Method to insert a new task into the database
+    public long insertTask(String taskName, String taskDescription, int completed) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TASK_NAME, taskName);
+        values.put(COLUMN_TASK_DESCRIPTION, taskDescription);
+        values.put(COLUMN_COMPLETED, completed);
+        long id = db.insert(TABLE_NAME, null, values);
+        db.close();
+        return id;
+    }
+
+    // Method to retrieve all tasks from the database
+    public ArrayList<Task> getAllTasks() {
+        ArrayList<Task> taskList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Task task = new Task();
+                task.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+                task.setTaskName(cursor.getString(cursor.getColumnIndex(COLUMN_TASK_NAME)));
+                task.setTaskDescription(cursor.getString(cursor.getColumnIndex(COLUMN_TASK_DESCRIPTION)));
+                task.setCompleted(cursor.getInt(cursor.getColumnIndex(COLUMN_COMPLETED)));
+                taskList.add(task);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+        return taskList;
+    }
+
+    // Additional CRUD methods can be added here
 }

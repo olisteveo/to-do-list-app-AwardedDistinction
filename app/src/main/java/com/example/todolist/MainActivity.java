@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         // Initialise task list and adapter with custom layout
         taskList = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, R.layout.custom_task_list_item, R.id.textViewTaskName, taskList);
-
         // Set up the ListView
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(adapter);
@@ -48,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize database helper
         dbHelper = new MyDatabaseHelper(this);
+
+        ArrayList tasks = dbHelper.getAllTasks();
+        Log.d("database", tasks.toString());
+        for (Object task: tasks ) {
+            Log.d("database", task.toString());
+            taskList.add(0, task.toString()); // Add task to the beginning of the list
+        }
 
         // Set click listener for list items
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -67,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             taskList.add(0, task); // Add task to the beginning of the list
             adapter.notifyDataSetChanged();
             editText.getText().clear();
+            dbHelper.insertTask(task, "",0);
         } else {
             Toast.makeText(this, "Please enter a task", Toast.LENGTH_SHORT).show();
         }
@@ -144,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Add the task to the top of the list
                 taskList.add(0, task);
+                dbHelper.insertTask(taskName, taskDescription,0);
                 adapter.notifyDataSetChanged();
             } else if (requestCode == EDIT_TASK_REQUEST) {
                 // Handle the result from EditTaskActivity if needed

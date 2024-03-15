@@ -18,10 +18,8 @@ import android.widget.Toast;
 import android.content.DialogInterface;
 import androidx.appcompat.app.AlertDialog;
 
-import com.example.todolist.OliDB.DB;
-import com.example.todolist.Tasks.AddTaskActivity;
-import com.example.todolist.Tasks.EditTaskActivity;
-import com.example.todolist.Tasks.Task;
+import com.example.todolist.OliDB.TasksTable;
+import com.example.todolist.OliDB.Models.Task;
 
 import java.util.ArrayList;
 
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int ADD_TASK_REQUEST = 1; // Request code for AddTaskActivity
     private static final int EDIT_TASK_REQUEST = 2; // Request code for EditTaskActivity
     private EditText editText;
-    private DB tasksDB; // pre loaded tasks from the db
+    private TasksTable tasksDB; // pre loaded tasks from the db
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add bottom border to EditText
         addBottomBorder();
-        tasksDB = DB.getInstance();
+        tasksDB = TasksTable.getInstance();
         Log.d("MyApp", "activity onCreate()");
 //        tasks = Tasks.getInstance();
         // Initialize database helper
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         for (Task task: tasksDB.loaded() ) {
            Log.d("Tasks", task.getTaskName());
 
-           taskList.add(task.getPosition(), task.getTaskName()); // Add task to the beginning of the list
+           taskList.add(tasksDB.loaded().indexOf(task), task.getTaskName()); // Add task to the beginning of the list
         }
     }
 
@@ -90,14 +88,14 @@ public class MainActivity extends AppCompatActivity {
             taskList.add(0, task); // Add task to the beginning of the list
             adapter.notifyDataSetChanged();
             editText.getText().clear();
-            DB.getInstance().insertTask(task, "",0);
+            TasksTable.getInstance().insertTask(task, "",0);
         } else {
             Toast.makeText(this, "Please enter a task", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void editOrDeleteTask(final int position) {
-        // Display options to edit or delete the selected task
+        // Display options to edit or delete the select task
         final String task = taskList.get(position);
 
         // Implement editing logic here
@@ -126,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // If user confirms deletion, delete the task
-                        if(DB.getInstance().deleteByPosition(position)) {
+                        if(TasksTable.getInstance().deleteByPosition(position)) {
                             String taskName = taskList.get(position).toString();
                             taskList.remove(position);
                             adapter.notifyDataSetChanged();
@@ -173,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 String task = taskName + ": " + taskDescription;
 
                 // Add the task to the top of the list
-                DB.getInstance().insertTask(taskName, taskDescription,0);
+                TasksTable.getInstance().insertTask(taskName, taskDescription,0);
                 taskList.add(0, task);
                 adapter.notifyDataSetChanged();
             } else if (requestCode == EDIT_TASK_REQUEST) {

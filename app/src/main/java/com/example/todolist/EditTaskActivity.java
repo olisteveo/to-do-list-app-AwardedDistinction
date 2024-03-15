@@ -1,5 +1,5 @@
 // EditTaskActivity.java
-package com.example.todolist.Tasks;
+package com.example.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;

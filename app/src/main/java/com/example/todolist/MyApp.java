@@ -2,13 +2,13 @@ package com.example.todolist;
 
 import android.app.Application;
 import android.util.Log;
-import com.example.todolist.OliDB.DB;
+import com.example.todolist.OliDB.TasksTable;
 
 public class MyApp extends Application {
     private static final String DATABASE_NAME = "task_database";
     private static final int DATABASE_VERSION = 1;
 
-    protected DB tasksDB;
+    protected TasksTable tasksDB;
 
     private static final String TAG = "MyApp";
 
@@ -16,7 +16,7 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Application onCreate()");
-        tasksDB = DB.initFor(this, DATABASE_NAME, DATABASE_VERSION);
+        tasksDB = TasksTable.initFor(this, DATABASE_NAME, DATABASE_VERSION);
         tasksDB.load();
     }
 

@@ -8,7 +8,7 @@
         android:id="@+id/editTextTaskName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Task Name"
+        android:hint="@string/task_name"
         android:inputType="text" />
 
     <EditText
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextTaskName"
         android:layout_marginTop="16dp"
-        android:hint="Task Description"
+        android:hint="@string/task_description"
         android:inputType="textMultiLine"
         android:minLines="3" />
 
@@ -28,6 +28,6 @@
         android:layout_below="@id/editTextTaskDescription"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="16dp"
-        android:text="Add Task" />
+        android:text="@string/add_task" />
 
 </RelativeLayout>

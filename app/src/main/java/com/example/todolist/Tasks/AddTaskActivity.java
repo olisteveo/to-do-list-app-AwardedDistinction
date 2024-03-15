@@ -1,5 +1,5 @@
 // AddTaskActivity.java
-package com.example.todolist;
+package com.example.todolist.Tasks;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.annotation.SuppressLint;
+
+import com.example.todolist.R;
 
 
 public class AddTaskActivity extends AppCompatActivity {

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    package="com.example.todolist"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,8 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddTaskActivity" />
-        <activity android:name=".EditTaskActivity" />
+        <activity android:name=".Tasks.AddTaskActivity" android:parentActivityName=".MainActivity" />
+        <activity android:name=".Tasks.EditTaskActivity" android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

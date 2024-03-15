@@ -1,8 +1,10 @@
 // EditTaskActivity.java
-package com.example.todolist;
+package com.example.todolist.Tasks;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.todolist.R;
 
 public class EditTaskActivity extends AppCompatActivity {
 

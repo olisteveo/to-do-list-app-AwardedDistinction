@@ -30,6 +30,15 @@ public class Task {
         return task;
     }
 
+    /**
+     * Create a new task model object from an existing entry in the database.
+     *
+     * @param id              The ID of the task.
+     * @param taskName        The name of the task.
+     * @param taskDescription The description of the task.
+     * @param completed       The completion status of the task.
+     * @return                The new modeled task object.
+     */
     public static Task newFromInserted(int id, String taskName, String taskDescription, int completed)
     {
         Task task = newFromBasic(taskName, taskDescription, completed);

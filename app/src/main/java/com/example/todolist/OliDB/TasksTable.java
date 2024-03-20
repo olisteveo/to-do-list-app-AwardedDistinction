@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 /**
  * Represents a database manager for tasks.
- * Provides methods for interacting with the tasks table in the database.
+ * Provides various methods for interacting with the tasks table in the database.
  */
 public class TasksTable extends DB {
 
@@ -21,7 +21,6 @@ public class TasksTable extends DB {
     protected static final String COLUMN_TASK_NAME = "task_name";
     protected static final String COLUMN_TASK_DESCRIPTION = "task_description";
     protected static final String COLUMN_COMPLETED = "completed";
-
     private ArrayList<Task> loaded;
     private static TasksTable instance = null;
 
@@ -40,7 +39,7 @@ public class TasksTable extends DB {
     }
 
     /**
-     * Initializes a DB instance for the provided application, database name, and version.
+     * Initialises a DB instance for the provided application, DB name, and version.
      *
      * @param app       The application instance.
      * @param dbName    The name of the database.
@@ -67,6 +66,8 @@ public class TasksTable extends DB {
     public void onCreate(SQLiteDatabase db) {
         super.onCreate(db);
     }
+
+    // Method overridden to append custom table column definitions
     @Override
     protected StringBuilder getCreateTableSQL() {
         return super.getCreateTableSQL()
@@ -86,7 +87,7 @@ public class TasksTable extends DB {
 
     /**
      * Getter for the ID field name
-     * @return field ID name as a string
+     * @return the field ID name as a string
      */
     @Override
     public String getIdFieldName()
@@ -100,7 +101,7 @@ public class TasksTable extends DB {
     }
 
     /**
-     * Loads tasks from the database.
+     * Loads the tasks from the database.
      */
     public void load() {
         loadAllRecords();
@@ -117,17 +118,15 @@ public class TasksTable extends DB {
     }
 
     /**
+     * Retrieves a model object from a cursor.
      *
-     * @param cursor
-     * @return                           Returns the model based task record
-     * @throws  IllegalArgumentException Returns the zero-based index for the given column name,
+     * @param cursor                    The cursor to retrieve data from.
+     * @return                          Returns the model based task record.
+     * @throws IllegalArgumentException Returns the zero-based index for the given column name,
      *                                   or throws IllegalArgumentException if the column doesn't exist.
      */
     protected Task getObjectModelFromCursor(Cursor cursor)
     {
-        // Create a new Task object for each row
-        // Potential for the field name passed to the cursor method to not exist in the db definition
-        // However the field name is known and always known - non error
         Task task = Task.newFromInserted(
                 cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
                 cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TASK_NAME)),
@@ -158,7 +157,6 @@ public class TasksTable extends DB {
         values.put(COLUMN_TASK_DESCRIPTION, taskDescription);
         values.put(COLUMN_COMPLETED, completed);
         long id = getWritableDatabase().insert(getTableName(), null, values);
-        // abstract creating a new Task model
         Task task = Task.newFromInserted((int) id, taskName, taskDescription, completed);
         task.setId((int) id);
         db.close();
@@ -177,7 +175,6 @@ public class TasksTable extends DB {
      */
     public boolean deleteByPosition(int position) {
         Task task = loaded().get(position);
-        // run the SQL to delete this task from the database
         Log.i(LOG_TAG, "Deleting task - " + task.getTaskName());
         String sql = getDeleteRecordSQL(task.getId());
         Log.i(LOG_TAG, "SQL" + sql);
@@ -188,7 +185,6 @@ public class TasksTable extends DB {
                 .append(position);
         Log.i(LOG_TAG, msg.toString());
         loaded.remove(task);
-        // return if a task was deleted or not
         return true;
     }
 

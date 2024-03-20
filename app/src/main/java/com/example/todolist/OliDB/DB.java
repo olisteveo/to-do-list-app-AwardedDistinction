@@ -15,7 +15,6 @@ public class DB extends DBM {
 
     protected static String TABLE_NAME;
     protected static String COLUMN_ID = "id";
-
     protected static Application myApp;
     protected static DB instance = null;
     protected ArrayList<?> loaded;

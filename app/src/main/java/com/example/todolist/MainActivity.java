@@ -1,7 +1,7 @@
+// MainActivity.java
 package com.example.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,12 +30,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int ADD_TASK_REQUEST = 1; // Request code for AddTaskActivity
     private static final int EDIT_TASK_REQUEST = 2; // Request code for EditTaskActivity
     private EditText editText;
-    private TasksTable tasksDB; // pre loaded tasks from the db
+    private TasksTable tasksDB; // Preloaded tasks from the database
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         // Initialise task list and adapter with custom layout
@@ -58,61 +57,48 @@ public class MainActivity extends AppCompatActivity {
 
         // Add bottom border to EditText
         addBottomBorder();
+
+        // Initialise tasks database
         tasksDB = TasksTable.getInstance();
-        Log.d("MyApp", "activity onCreate()");
-//        tasks = Tasks.getInstance();
-        // Initialize database helper
-//        dbHelper = new MyDatabaseHelper(this);
+        Log.d("MyApp", "Activity onCreate()");
 
-//        ArrayList _tasks = dbHelper.getAllTasks();
-
-
-        if(tasksDB.loaded().isEmpty()) {
-            return;
-        }
-//        Log.d("database", _tasks.toString());
-
-        for (Task task: tasksDB.loaded() ) {
-           Log.d("Tasks", task.getTaskName());
-
-           taskList.add(tasksDB.loaded().indexOf(task), task.getTaskName()); // Add task to the beginning of the list
+        // If any tasks are loaded from the database, add them to the list
+        if (!tasksDB.loaded().isEmpty()) {
+            for (Task task : tasksDB.loaded()) {
+                Log.d("Tasks", task.getTaskName());
+                taskList.add(tasksDB.loaded().indexOf(task), task.getTaskName());
+            }
         }
     }
 
     // Method to add task
     public void addTask(View view) {
-        EditText editText = findViewById(R.id.editText);
         String task = editText.getText().toString().trim();
 
         if (!task.isEmpty()) {
-            taskList.add(0, task); // Add task to the beginning of the list
+            // Add task to the beginning of the list
+            taskList.add(0, task);
             adapter.notifyDataSetChanged();
             editText.getText().clear();
-            TasksTable.getInstance().insertTask(task, "",0);
+            TasksTable.getInstance().insertTask(task, "", 0); // Insert task into the database
         } else {
             Toast.makeText(this, "Please enter a task", Toast.LENGTH_SHORT).show();
         }
     }
 
+    // Method to handle editing or deleting a task
     private void editOrDeleteTask(final int position) {
-        // Display options to edit or delete the select task
+        // Placeholder method for editing or deleting a task
         final String task = taskList.get(position);
-
-        // Implement editing logic here
-        // For simplicity show a toast indicating the selected task and its position in the list
+        // For simplicity, currently showing a toast message with task details
         Toast.makeText(this, "Selected task: " + task + "\nPosition: " + position, Toast.LENGTH_SHORT).show();
     }
 
     // Method to delete a task
     public void deleteTask(View view) {
-        // Find the parent view of the delete button, which is the list item
-        View listItem = (View) view.getParent();
-
-        // Find the index of the list item
-        final int position = ((ListView) findViewById(R.id.listView)).getPositionForView(listItem);
-
-        // Show the delete confirmation dialog
-        showDeleteConfirmationDialog(position);
+        View listItem = (View) view.getParent(); // Find the parent view of the delete button
+        final int position = ((ListView) findViewById(R.id.listView)).getPositionForView(listItem); // Find the index of the list item
+        showDeleteConfirmationDialog(position); // Show the delete confirmation dialog
     }
 
     // Method to show delete confirmation dialog
@@ -124,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // If user confirms deletion, delete the task
-                        if(TasksTable.getInstance().deleteByPosition(position)) {
+                        if (TasksTable.getInstance().deleteByPosition(position)) {
                             String taskName = taskList.get(position).toString();
                             taskList.remove(position);
                             adapter.notifyDataSetChanged();
@@ -171,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 String task = taskName + ": " + taskDescription;
 
                 // Add the task to the top of the list
-                TasksTable.getInstance().insertTask(taskName, taskDescription,0);
+                TasksTable.getInstance().insertTask(taskName, taskDescription, 0); // Insert task into the database
                 taskList.add(0, task);
                 adapter.notifyDataSetChanged();
             } else if (requestCode == EDIT_TASK_REQUEST) {

@@ -12,7 +12,6 @@ import android.annotation.SuppressLint;
 
 import com.example.todolist.R;
 
-
 public class AddTaskActivity extends AppCompatActivity {
 
     private EditText editTextTaskName;
@@ -23,7 +22,7 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
-        // Initialize views
+        // Initialise views
         editTextTaskName = findViewById(R.id.editTextTaskName);
         editTextTaskDescription = findViewById(R.id.editTextTaskDescription);
 
@@ -37,23 +36,24 @@ public class AddTaskActivity extends AppCompatActivity {
         });
     }
 
-    // Method to add task
+    // Method to add the task
     private void addTask() {
         String taskName = editTextTaskName.getText().toString().trim();
         String taskDescription = editTextTaskDescription.getText().toString().trim();
 
+        // Check if task name is not empty
         if (!taskName.isEmpty()) {
-            // Pass data back to MainActivity
+            // Pass data back to the MainActivity
             Intent intent = new Intent();
             intent.putExtra("taskName", taskName);
             intent.putExtra("taskDescription", taskDescription);
             setResult(RESULT_OK, intent);
-            finish();
+            finish(); // Finish the activity and return to MainActivity
         } else {
+            // Show a toast message if the task name is empty
             Toast.makeText(this, "Please enter a task name", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     // Method to handle back button press
     @Override
